@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Nepali Cannabis Network</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome for clean icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -13,8 +12,8 @@
     <!-- STICKY HEADER -->
     <header>
         <div class="logo-box">
-            <!-- Smart fallback: if logo.png fails, it automatically tries logo.jpg -->
-            <img src="logo.png" alt="The Stoned Nepal Logo" onerror="this.onerror=null; this.src='logo.jpg';">
+            <!-- Explicitly looking for logo.jpg now -->
+            <img src="logo.jpg" alt="The Stoned Nepal Logo">
             <span class="logo-text">STONED NEPAL</span>
         </div>
         <nav>
@@ -62,9 +61,9 @@
             </div>
         </section>
 
-        <!-- TAB 2: THE DRUG ACT & 2026 REFORMS -->
+        <!-- TAB 2: THE DRUG ACT & REFORMS -->
         <section id="law" class="tab-content">
-            <div class="content-card law-card">
+            <div class="content-card">
                 <span class="meta-tag alert-tag">Legal Framework</span>
                 <h2>The Narcotic Drugs (Control) Act, 2033 (1976) & Present Evolution</h2>
                 <hr>
@@ -106,11 +105,11 @@
                 </div>
 
                 <div class="update-box">
-                    <h3><i class="fa-solid fa-scale-balanced text-gold"></i> Groundbreaking 2024–2026 Reforms</h3>
+                    <h3><i class="fa-solid fa-scale-balanced text-gold"></i> Groundbreaking Reforms</h3>
                     <p>The tides are shifting rapidly. Following high-level discussions initiated by lawmakers pushing for medical exceptions, critical updates have altered the path toward regulation:</p>
                     <ul>
                         <li><strong>National Studies:</strong> Following budget directives, national frameworks initiated extensive feasibility tracking for controlled medicinal cannabis production.</li>
-                        <li><strong>Gandaki Province Bill:</strong> In late 2025, the Gandaki Provincial Assembly tabled a specialized regulatory draft bill targeting controlled cultivation to supply medical and industrial manufacturing industries, undergoing expert legislative review as of early 2026.</li>
+                        <li><strong>Gandaki Province Bill:</strong> In late 2025, the Gandaki Provincial Assembly tabled a specialized regulatory draft bill targeting controlled cultivation to supply medical and industrial manufacturing industries.</li>
                         <li><strong>Ilam Municipality Procedures:</strong> Breaking historic ground on **March 11, 2026**, Ilam Municipality officially launched its *'Hemp Cultivation Promotion and Management Procedure, 2026'*, issuing an active call for local farmers to apply for localized, regulated hemp farming operations to boost yarn, fiber, and industrial cloth production.</li>
                     </ul>
                 </div>
@@ -159,32 +158,27 @@
                 <!-- HUB SIDEBAR -->
                 <div class="hub-sidebar">
                     <h3><i class="fa-solid fa-circle-nodes"></i> Hub Navigation</h3>
-                    <button class="hub-side-btn active"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
-                    <button class="hub-side-btn"><i class="fa-solid fa-images"></i> Member Photos</button>
-                    <button class="hub-side-btn"><i class="fa-solid fa-video"></i> Video Clips</button>
-                    <button class="hub-side-btn"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
+                    <button class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
+                    <button class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
                 </div>
 
-                <!-- HUB FEED -->
-                <div class="hub-feed-zone">
-                    
-                    <!-- CREATE MOCK POST -->
+                <!-- HUB FEED ZONE -->
+                <div id="hub-feed-zone" class="hub-view-section active">
+                    <!-- CREATE POST BOX -->
                     <div class="create-post-box">
                         <div class="post-input-wrapper">
                             <i class="fa-solid fa-user-circle avatar-placeholder"></i>
-                            <input type="text" placeholder="Share photos, clips, or thoughts with the network...">
+                            <input type="text" id="post-input-field" placeholder="Share photos, clips, or thoughts with the network...">
                         </div>
                         <div class="post-actions">
-                            <button class="action-btn"><i class="fa-solid fa-image"></i> Add Photo</button>
-                            <button class="action-btn"><i class="fa-solid fa-film"></i> Video Clip</button>
-                            <button class="submit-post-btn">Post to Hub</button>
+                            <span style="font-size: 12px; color: #64748b;">Posting as: Anonymous Advocate</span>
+                            <button class="submit-post-btn" onclick="addNewPost()">Post to Hub</button>
                         </div>
                     </div>
 
-                    <!-- MOCK STREAMING FEED -->
-                    <div class="feed-posts">
-                        
-                        <!-- Post 1 (Photo) -->
+                    <!-- STREAMING FEED CONTAINER -->
+                    <div id="feed-posts-container">
+                        <!-- Post 1 -->
                         <div class="hub-post">
                             <div class="post-header">
                                 <i class="fa-solid fa-user-shield text-gold"></i>
@@ -193,37 +187,25 @@
                                     <span class="post-time">2 hours ago</span>
                                 </div>
                             </div>
-                            <p class="post-text">Stunning wild strain spotted blooming natively in the hills of western Nepal! The industrial biomass potential sitting completely unutilized right in our backyards is unbelievable. #LegalizeNepal #HempIndustrialization</p>
-                            <div class="post-media-container">
-                                <img src="https://images.unsplash.com/photo-1536882240095-0379873feb4e?q=80" alt="Hemp Post Image" class="post-img">
-                            </div>
+                            <p class="post-text">Stunning wild strain spotted blooming natively in the hills of western Nepal! The industrial biomass potential sitting completely unutilized right in our backyards is unbelievable. #LegalizeNepal</p>
                             <div class="post-foot-actions">
                                 <span><i class="fa-solid fa-heart text-danger"></i> 142 Likes</span>
                                 <span><i class="fa-solid fa-comment"></i> 28 Comments</span>
-                                <span><i class="fa-solid fa-share"></i> Share</span>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Post 2 (Clip Placeholder) -->
-                        <div class="hub-post">
-                            <div class="post-header">
-                                <i class="fa-solid fa-user-circle"></i>
-                                <div>
-                                    <h4>Pokhara_Hemp_Co</h4>
-                                    <span class="post-time">5 hours ago</span>
-                                </div>
-                            </div>
-                            <p class="post-text">Quick clip breaking down how the new Ilam Municipality 2026 framework operates for local community cultivation. Full discussion streaming live tonight! 🎥👇</p>
-                            <div class="clip-mock-player">
-                                <div class="play-overlay"><i class="fa-solid fa-play-circle"></i> Play Network Clip</div>
-                            </div>
-                            <div class="post-foot-actions">
-                                <span><i class="fa-solid fa-heart"></i> 95 Likes</span>
-                                <span><i class="fa-solid fa-comment"></i> 12 Comments</span>
-                                <span><i class="fa-solid fa-share"></i> Share</span>
-                            </div>
+                <!-- LIVE CHATROOM ZONE (NEW INTERACTIVE INTERFACE) -->
+                <div id="hub-chat-zone" class="hub-view-section" style="display:none;">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages-box">
+                            <div class="chat-msg"><strong>System_Bot:</strong> Welcome to the Stoned Nepal Real-Time Network Chat. Stay respectful!</div>
                         </div>
-
+                        <div class="chat-input-row">
+                            <input type="text" id="chat-msg-input" placeholder="Type a message to the live network..." onkeypress="handleChatKey(event)">
+                            <button class="submit-post-btn" onclick="sendChatMessage()">Send</button>
+                        </div>
                     </div>
                 </div>
 
@@ -232,26 +214,82 @@
 
     </main>
 
-    <!-- SPA NAVIGATION ENGINE -->
+    <!-- SPA ENGINE & ACTIVE INTERACTION INTERFACES -->
     <script>
+        // Tab switching engine
         function switchTab(tabId) {
-            // Remove active classes from all nav links
-            document.querySelectorAll('.nav-link').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(section => section.classList.remove('active'));
             
-            // Remove active classes from all content sections
-            document.querySelectorAll('.tab-content').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Add active class to clicked button and targeted section
-            const targetButton = event.currentTarget;
-            targetButton.classList.add('active');
+            event.currentTarget.classList.add('active');
             document.getElementById(tabId).classList.add('active');
-
-            // Smooth window auto-scroll to view content changes perfectly
             window.scrollTo({ top: 380, behavior: 'smooth' });
+        }
+
+        // Hub view layout toggles
+        function switchHubView(viewType) {
+            document.querySelectorAll('.hub-side-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            if(viewType === 'feed') {
+                document.getElementById('hub-feed-zone').style.display = 'block';
+                document.getElementById('hub-chat-zone').style.display = 'none';
+            } else {
+                document.getElementById('hub-feed-zone').style.display = 'none';
+                document.getElementById('hub-chat-zone').style.display = 'block';
+            }
+        }
+
+        // ENGINE: Add Post to Feed
+        function addNewPost() {
+            const inputField = document.getElementById('post-input-field');
+            const textContent = inputField.value.trim();
+            
+            if(textContent === "") return;
+
+            const container = document.getElementById('feed-posts-container');
+            const newPostHtml = `
+                <div class="hub-post" style="animation: fadeIn 0.4s ease-out;">
+                    <div class="post-header">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <div>
+                            <h4>Network_Member_Nepal</h4>
+                            <span class="post-time">Just now</span>
+                        </div>
+                    </div>
+                    <p class="post-text">${textContent}</p>
+                    <div class="post-foot-actions">
+                        <span><i class="fa-solid fa-heart"></i> 0 Likes</span>
+                        <span><i class="fa-solid fa-comment"></i> 0 Comments</span>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('afterbegin', newPostHtml);
+            inputField.value = ""; // clear input
+        }
+
+        // ENGINE: Add Message to Chatroom
+        function sendChatMessage() {
+            const inputField = document.getElementById('chat-msg-input');
+            const textContent = inputField.value.trim();
+            
+            if(textContent === "") return;
+
+            const chatBox = document.getElementById('chat-messages-box');
+            const newMsgElement = document.createElement('div');
+            newMsgElement.className = 'chat-msg';
+            newMsgElement.innerHTML = `<strong>You:</strong> ${textContent}`;
+            
+            chatBox.appendChild(newMsgElement);
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll down
+            inputField.value = "";
+        }
+
+        function handleChatKey(e) {
+            if(e.key === 'Enter') {
+                sendChatMessage();
+            }
         }
     </script>
 </body>
