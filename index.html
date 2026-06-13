@@ -3,46 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Stoned Nepal Network</title>
+    <title>The Nepali Cannabis Network</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for clean icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- STICKY HEADER -->
     <header>
         <div class="logo-box">
-            <img src="logo.png" alt="The Stoned Nepal Logo">
+            <!-- Smart fallback: if logo.png fails, it automatically tries logo.jpg -->
+            <img src="logo.png" alt="The Stoned Nepal Logo" onerror="this.onerror=null; this.src='logo.jpg';">
+            <span class="logo-text">STONED NEPAL</span>
         </div>
         <nav>
-            <a href="#about">Ganja in Nepal</a>
-            <a href="#law">Drug Act 2033</a>
-            <a href="#benefits">Benefits</a>
-            <a href="#reform">Legalization Hub</a>
+            <button class="nav-link active" onclick="switchTab('history')"><i class="fa-solid fa-gopuram"></i> Ganja in Nepal</button>
+            <button class="nav-link" onclick="switchTab('law')"><i class="fa-solid fa-gavel"></i> Drug Act 2033</button>
+            <button class="nav-link" onclick="switchTab('benefits')"><i class="fa-solid fa-seedling"></i> Benefits</button>
+            <button class="nav-link highlight" onclick="switchTab('hub')"><i class="fa-solid fa-users"></i> Legalization Hub</button>
         </nav>
     </header>
 
+    <!-- IMMERSIVE CANNABIS HERO BANNER -->
     <section class="hero">
-        <h1>THE NEpALI CANNABIS NETWORK</h1>
-        <p>Education, Advocacy, and the Road to Legalization.</p>
+        <div class="hero-overlay">
+            <h1>THE NEPALI CANNABIS NETWORK</h1>
+            <p>Rooted in Tradition, Driven by Science, Reforming the Future.</p>
+            <div class="status-badge"><span class="pulse-dot"></span> Active Community Network</div>
+        </div>
     </section>
 
-    <div class="container">
-        <section id="about" class="card">
-            <h2>Ganja in Nepal: A Rich History</h2>
-            <p>For centuries, cannabis has played a massive role in Nepal’s culture, Ayurvedic medicine, and religious festivals like Maha Shivaratri. From the wild hills of Rolpa to the famous 'Freak Street' era of the 1970s, Nepal was a global hub for pure, high-quality ganja before foreign pressure changed the landscape.</p>
+    <!-- MAIN APP CONTAINER -->
+    <main class="app-container">
+
+        <!-- TAB 1: DEEP HISTORICAL ANALYSIS -->
+        <section id="history" class="tab-content active">
+            <div class="content-card">
+                <span class="meta-tag">Cultural Heritage</span>
+                <h2>Ganja in Nepal: A Deeply Analyzed History</h2>
+                <hr>
+                <p>For centuries, the cannabis plant has coexisted alongside traditional Nepalese life. Far from being a modern recreational luxury, *Ganja* is deeply woven into our socio-religious fabric and ancient healthcare practices.</p>
+                
+                <div class="analysis-grid">
+                    <div class="analysis-box">
+                        <h3><i class="fa-solid fa-om"></i> Spiritual & Vedic Roots</h3>
+                        <p>In Vedic philosophy and Hindu tradition, cannabis is revered as a sacred plant of Lord Shiva. During the annual **Maha Shivaratri** festival, sadhus, mystics, and devotees traditionally utilize cannabis as a spiritual catalyst for meditation and ascetic devotion.</p>
+                    </div>
+                    <div class="analysis-box">
+                        <h3><i class="fa-solid fa-mortar-pestle"></i> Ayurvedic Medicine</h3>
+                        <p>Traditional Himalayan healers have long incorporated wild cannabis extracts into indigenous treatments to manage chronic pain, digestive disorders, insomnia, and respiratory distress long before western pharmaceutical equivalents arrived.</p>
+                    </div>
+                </div>
+
+                <blockquote class="historical-quote">
+                    "From the high altitudes of Rolpa and Western Nepal to the bustling storefronts of Kathmandu's famous <strong>Freak Street era (1960s-1973)</strong>, Nepal operated as a global gold-standard producer of legal, pure, high-quality cannabis products, generating substantial tourism and tax revenue."
+                </blockquote>
+            </div>
         </section>
 
-        <section id="law" class="card alert">
-            <h2>The Narcotic Drugs (Control) Act, 2033 (1976)</h2>
-            <p>Under strict international pressure, Nepal passed the Drug Act of 2033, enforcing a blanket ban on cultivation, sale, and possession. However, things are shifting. Recent discussions in parliament and bills introduced by lawmakers are pushing for limited medical exceptions, wild ganja utilization, and research allowances.</p>
+        <!-- TAB 2: THE DRUG ACT & 2026 REFORMS -->
+        <section id="law" class="tab-content">
+            <div class="content-card law-card">
+                <span class="meta-tag alert-tag">Legal Framework</span>
+                <h2>The Narcotic Drugs (Control) Act, 2033 (1976) & Present Evolution</h2>
+                <hr>
+                <p>Enacted under heavy foreign diplomatic and international treaty pressures during the global 'War on Drugs' era, the <strong>Narcotic Drugs (Control) Act of 2033</strong> imposed a sweeping blanket prohibition across Nepal, criminalizing cultivation, sale, and possession.</p>
+
+                <div class="law-table-container">
+                    <h3>Current Penalties Under Act 2033</h3>
+                    <table class="law-table">
+                        <thead>
+                            <tr>
+                                <th>Quantity / Offense</th>
+                                <th>Imprisonment Range</th>
+                                <th>Maximum Financial Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Up to 50 grams (Possession)</td>
+                                <td>Up to 3 Months</td>
+                                <td>NPR 3,000</td>
+                            </tr>
+                            <tr>
+                                <td>50g to 500 grams</td>
+                                <td>1 Month to 1 Year</td>
+                                <td>NPR 5,000</td>
+                            </tr>
+                            <tr>
+                                <td>500g to 2 Kilograms</td>
+                                <td>6 Months to 2 Years</td>
+                                <td>NPR 10,000</td>
+                            </tr>
+                            <tr>
+                                <td>10 Kilograms or Over</td>
+                                <td>2 to 10 Years</td>
+                                <td>NPR 100,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="update-box">
+                    <h3><i class="fa-solid fa-scale-balanced text-gold"></i> Groundbreaking 2024–2026 Reforms</h3>
+                    <p>The tides are shifting rapidly. Following high-level discussions initiated by lawmakers pushing for medical exceptions, critical updates have altered the path toward regulation:</p>
+                    <ul>
+                        <li><strong>National Studies:</strong> Following budget directives, national frameworks initiated extensive feasibility tracking for controlled medicinal cannabis production.</li>
+                        <li><strong>Gandaki Province Bill:</strong> In late 2025, the Gandaki Provincial Assembly tabled a specialized regulatory draft bill targeting controlled cultivation to supply medical and industrial manufacturing industries, undergoing expert legislative review as of early 2026.</li>
+                        <li><strong>Ilam Municipality Procedures:</strong> Breaking historic ground on **March 11, 2026**, Ilam Municipality officially launched its *'Hemp Cultivation Promotion and Management Procedure, 2026'*, issuing an active call for local farmers to apply for localized, regulated hemp farming operations to boost yarn, fiber, and industrial cloth production.</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
-        <section id="benefits" class="card">
-            <h2>The Benefits: Why Reform Matters</h2>
-            <ul>
-                <li><strong>Economic Promise:</strong> High-quality hemp export, job creation, and crop diversification for local farmers.</li>
-                <li><strong>Medical Value:</strong> Natural pain management, traditional Ayurvedic applications, and epilepsy/chemotherapy relief.</li>
-                <li><strong>Industrial Potential:</strong> Eco-friendly clothing, building materials, and bioplastics from hemp fibers.</li>
-            </ul>
+        <!-- TAB 3: COMPLEX BENEFITS -->
+        <section id="benefits" class="tab-content">
+            <div class="content-card">
+                <span class="meta-tag benefit-tag">Impact Analysis</span>
+                <h2>The Triad of Benefits: Economic, Medical, and Structural</h2>
+                <hr>
+                
+                <div class="benefits-container">
+                    <div class="benefit-row">
+                        <div class="benefit-icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="benefit-text">
+                            <h3>1. Economic Regeneration & Exports</h3>
+                            <p>Global demand for organic hemp products represents a multi-billion dollar economic engine. Unlocking legalization empowers low-income, marginalized mountain farmers across Nepal with highly resilient cash-crop diversification, establishing direct avenues for self-employment and stopping the massive exodus of youth pursuing overseas labor.</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-row">
+                        <div class="benefit-icon-box"><i class="fa-solid fa-house-medical"></i></div>
+                        <div class="benefit-text">
+                            <h3>2. Medical Sovereignty & Oncology Relief</h3>
+                            <p>By distinguishing therapeutic cannabinoids like CBD from psychoactive compounds, Nepal can engineer affordable, home-grown palliative therapies. Leading oncologists support utilizing cannabis extracts as crucial pain-management solutions, particularly inside remote rural communities lacking immediate access to expensive pharmaceutical painkillers like morphine.</p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-row">
+                        <div class="benefit-icon-box"><i class="fa-solid fa-industry"></i></div>
+                        <div class="benefit-text">
+                            <h3>3. Industrial Innovation</h3>
+                            <p>Industrial hemp fibers offer an eco-friendly replacement for high-emission materials. The durable inner stalks provide raw components for organic paper production, industrial textiles, sustainable clothing yarns, high-strength ropes, bioplastics, and heavy construction insulation blocks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-    </div>
+
+        <!-- TAB 4: LEGALIZATION HUB (COMMUNITY INTERFACE) -->
+        <section id="hub" class="tab-content">
+            <div class="hub-layout">
+                
+                <!-- HUB SIDEBAR -->
+                <div class="hub-sidebar">
+                    <h3><i class="fa-solid fa-circle-nodes"></i> Hub Navigation</h3>
+                    <button class="hub-side-btn active"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
+                    <button class="hub-side-btn"><i class="fa-solid fa-images"></i> Member Photos</button>
+                    <button class="hub-side-btn"><i class="fa-solid fa-video"></i> Video Clips</button>
+                    <button class="hub-side-btn"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
+                </div>
+
+                <!-- HUB FEED -->
+                <div class="hub-feed-zone">
+                    
+                    <!-- CREATE MOCK POST -->
+                    <div class="create-post-box">
+                        <div class="post-input-wrapper">
+                            <i class="fa-solid fa-user-circle avatar-placeholder"></i>
+                            <input type="text" placeholder="Share photos, clips, or thoughts with the network...">
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn"><i class="fa-solid fa-image"></i> Add Photo</button>
+                            <button class="action-btn"><i class="fa-solid fa-film"></i> Video Clip</button>
+                            <button class="submit-post-btn">Post to Hub</button>
+                        </div>
+                    </div>
+
+                    <!-- MOCK STREAMING FEED -->
+                    <div class="feed-posts">
+                        
+                        <!-- Post 1 (Photo) -->
+                        <div class="hub-post">
+                            <div class="post-header">
+                                <i class="fa-solid fa-user-shield text-gold"></i>
+                                <div>
+                                    <h4>Advocate_Kathmandu <span class="badge">Verified Creator</span></h4>
+                                    <span class="post-time">2 hours ago</span>
+                                </div>
+                            </div>
+                            <p class="post-text">Stunning wild strain spotted blooming natively in the hills of western Nepal! The industrial biomass potential sitting completely unutilized right in our backyards is unbelievable. #LegalizeNepal #HempIndustrialization</p>
+                            <div class="post-media-container">
+                                <img src="https://images.unsplash.com/photo-1536882240095-0379873feb4e?q=80" alt="Hemp Post Image" class="post-img">
+                            </div>
+                            <div class="post-foot-actions">
+                                <span><i class="fa-solid fa-heart text-danger"></i> 142 Likes</span>
+                                <span><i class="fa-solid fa-comment"></i> 28 Comments</span>
+                                <span><i class="fa-solid fa-share"></i> Share</span>
+                            </div>
+                        </div>
+
+                        <!-- Post 2 (Clip Placeholder) -->
+                        <div class="hub-post">
+                            <div class="post-header">
+                                <i class="fa-solid fa-user-circle"></i>
+                                <div>
+                                    <h4>Pokhara_Hemp_Co</h4>
+                                    <span class="post-time">5 hours ago</span>
+                                </div>
+                            </div>
+                            <p class="post-text">Quick clip breaking down how the new Ilam Municipality 2026 framework operates for local community cultivation. Full discussion streaming live tonight! 🎥👇</p>
+                            <div class="clip-mock-player">
+                                <div class="play-overlay"><i class="fa-solid fa-play-circle"></i> Play Network Clip</div>
+                            </div>
+                            <div class="post-foot-actions">
+                                <span><i class="fa-solid fa-heart"></i> 95 Likes</span>
+                                <span><i class="fa-solid fa-comment"></i> 12 Comments</span>
+                                <span><i class="fa-solid fa-share"></i> Share</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SPA NAVIGATION ENGINE -->
+    <script>
+        function switchTab(tabId) {
+            // Remove active classes from all nav links
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Remove active classes from all content sections
+            document.querySelectorAll('.tab-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Add active class to clicked button and targeted section
+            const targetButton = event.currentTarget;
+            targetButton.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+
+            // Smooth window auto-scroll to view content changes perfectly
+            window.scrollTo({ top: 380, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
