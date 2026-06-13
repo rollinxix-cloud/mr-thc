@@ -9,14 +9,14 @@
 </head>
 <body>
 
-    <!-- STICKY HEADER -->
     <header>
         <div class="logo-box">
-            <!-- Explicitly looking for logo.jpg now -->
-            <img src="logo.jpg" alt="The Stoned Nepal Logo">
+            <div class="logo-crop-frame">
+                <img src="logo.jpg" alt="Stoned Nepal Leaf">
+            </div>
             <span class="logo-text">STONED NEPAL</span>
         </div>
-        <nav>
+        <nav class="slideable-navbar">
             <button class="nav-link active" onclick="switchTab('history')"><i class="fa-solid fa-gopuram"></i> Ganja in Nepal</button>
             <button class="nav-link" onclick="switchTab('law')"><i class="fa-solid fa-gavel"></i> Drug Act 2033</button>
             <button class="nav-link" onclick="switchTab('benefits')"><i class="fa-solid fa-seedling"></i> Benefits</button>
@@ -24,7 +24,6 @@
         </nav>
     </header>
 
-    <!-- IMMERSIVE CANNABIS HERO BANNER -->
     <section class="hero">
         <div class="hero-overlay">
             <h1>THE NEPALI CANNABIS NETWORK</h1>
@@ -33,10 +32,8 @@
         </div>
     </section>
 
-    <!-- MAIN APP CONTAINER -->
     <main class="app-container">
 
-        <!-- TAB 1: DEEP HISTORICAL ANALYSIS -->
         <section id="history" class="tab-content active">
             <div class="content-card">
                 <span class="meta-tag">Cultural Heritage</span>
@@ -61,7 +58,6 @@
             </div>
         </section>
 
-        <!-- TAB 2: THE DRUG ACT & REFORMS -->
         <section id="law" class="tab-content">
             <div class="content-card">
                 <span class="meta-tag alert-tag">Legal Framework</span>
@@ -91,7 +87,7 @@
                                 <td>NPR 5,000</td>
                             </tr>
                             <tr>
-                                <td>500g to 2 Kilograms</td>
+                                <td>50g to 2 Kilograms</td>
                                 <td>6 Months to 2 Years</td>
                                 <td>NPR 10,000</td>
                             </tr>
@@ -116,7 +112,6 @@
             </div>
         </section>
 
-        <!-- TAB 3: COMPLEX BENEFITS -->
         <section id="benefits" class="tab-content">
             <div class="content-card">
                 <span class="meta-tag benefit-tag">Impact Analysis</span>
@@ -151,20 +146,15 @@
             </div>
         </section>
 
-        <!-- TAB 4: LEGALIZATION HUB (COMMUNITY INTERFACE) -->
         <section id="hub" class="tab-content">
             <div class="hub-layout">
-                
-                <!-- HUB SIDEBAR -->
                 <div class="hub-sidebar">
                     <h3><i class="fa-solid fa-circle-nodes"></i> Hub Navigation</h3>
                     <button class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
                     <button class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
                 </div>
 
-                <!-- HUB FEED ZONE -->
                 <div id="hub-feed-zone" class="hub-view-section active">
-                    <!-- CREATE POST BOX -->
                     <div class="create-post-box">
                         <div class="post-input-wrapper">
                             <i class="fa-solid fa-user-circle avatar-placeholder"></i>
@@ -176,9 +166,7 @@
                         </div>
                     </div>
 
-                    <!-- STREAMING FEED CONTAINER -->
                     <div id="feed-posts-container">
-                        <!-- Post 1 -->
                         <div class="hub-post">
                             <div class="post-header">
                                 <i class="fa-solid fa-user-shield text-gold"></i>
@@ -196,7 +184,6 @@
                     </div>
                 </div>
 
-                <!-- LIVE CHATROOM ZONE (NEW INTERACTIVE INTERFACE) -->
                 <div id="hub-chat-zone" class="hub-view-section" style="display:none;">
                     <div class="chat-container">
                         <div class="chat-messages" id="chat-messages-box">
@@ -208,25 +195,24 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
     </main>
 
-    <!-- SPA ENGINE & ACTIVE INTERACTION INTERFACES -->
     <script>
-        // Tab switching engine
         function switchTab(tabId) {
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(section => section.classList.remove('active'));
             
             event.currentTarget.classList.add('active');
             document.getElementById(tabId).classList.add('active');
-            window.scrollTo({ top: 380, behavior: 'smooth' });
+            
+            // Smoother focal snap points for phones
+            const scalarOffset = window.innerWidth < 768 ? 240 : 380;
+            window.scrollTo({ top: scalarOffset, behavior: 'smooth' });
         }
 
-        // Hub view layout toggles
         function switchHubView(viewType) {
             document.querySelectorAll('.hub-side-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
@@ -240,11 +226,9 @@
             }
         }
 
-        // ENGINE: Add Post to Feed
         function addNewPost() {
             const inputField = document.getElementById('post-input-field');
             const textContent = inputField.value.trim();
-            
             if(textContent === "") return;
 
             const container = document.getElementById('feed-posts-container');
@@ -264,32 +248,26 @@
                     </div>
                 </div>
             `;
-            
             container.insertAdjacentHTML('afterbegin', newPostHtml);
-            inputField.value = ""; // clear input
+            inputField.value = "";
         }
 
-        // ENGINE: Add Message to Chatroom
         function sendChatMessage() {
             const inputField = document.getElementById('chat-msg-input');
             const textContent = inputField.value.trim();
-            
             if(textContent === "") return;
 
             const chatBox = document.getElementById('chat-messages-box');
             const newMsgElement = document.createElement('div');
             newMsgElement.className = 'chat-msg';
             newMsgElement.innerHTML = `<strong>You:</strong> ${textContent}`;
-            
             chatBox.appendChild(newMsgElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll down
+            chatBox.scrollTop = chatBox.scrollHeight;
             inputField.value = "";
         }
 
         function handleChatKey(e) {
-            if(e.key === 'Enter') {
-                sendChatMessage();
-            }
+            if(e.key === 'Enter') sendChatMessage();
         }
     </script>
 </body>
