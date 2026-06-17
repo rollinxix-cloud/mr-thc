@@ -3,346 +3,662 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Stoned Photographer Network</title>
-    <link rel="stylesheet" href="style.css">
+    <title>EDN Global Hub Network</title>
+    
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SUPABASE GLOBAL CLOUD CLIENT MATRIX ENGINE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --accent-green: #4ade80;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header UI Layout */
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        .brand-zone {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-zone h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--accent-green);
+        }
+
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-container input {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-container input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .menu-trigger-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        /* Top Navigation Menu Links */
+        .top-nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            color: var(--accent-green);
+        }
+
+        /* App Structural Content Layout Matrix */
+        .main-app-shell {
+            flex: 1;
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            gap: 2rem;
+        }
+
+        .center-content-feed {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Sidebar System CSS Layouts */
+        .app-sidebar {
+            width: 280px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 45;
+        }
+
+        .hub-side-btn {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .hub-side-btn:hover, .hub-side-btn.active {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        /* Post Submission Composer Unit Box */
+        .post-composer-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .composer-text-area {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: var(--text-main);
+            resize: none;
+            height: 100px;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+
+        .composer-text-area:focus {
+            border-color: var(--accent-green);
+        }
+
+        .composer-actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-attach-label {
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+
+        .media-attach-label:hover {
+            color: var(--accent-green);
+        }
+
+        .submit-transmission-btn {
+            background-color: var(--accent-green);
+            color: #000;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-transmission-btn:hover {
+            opacity: 0.9;
+        }
+
+        .media-preview-container {
+            display: none;
+            position: relative;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            max-height: 250px;
+        }
+
+        .media-preview-container img, .media-preview-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .clear-media-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Feed Post Stream Blocks Rendering Layout */
+        .hub-post {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-header i {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+        }
+
+        .post-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .post-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .post-rendered-media-frame {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            max-height: 450px;
+        }
+
+        .post-rendered-media-frame img, .post-rendered-media-frame video {
+            width: 100%;
+            display: block;
+            object-fit: contain;
+            max-height: 450px;
+        }
+
+        .post-foot-actions {
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Bulletin Live RSS Grid Items Layout Structure */
+        .bulletin-node {
+            background-color: var(--bg-secondary);
+            border-left: 4px solid var(--accent-green);
+            padding: 1.25rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .bulletin-node h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-anchor {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .news-anchor:hover {
+            text-decoration: underline;
+            color: var(--accent-green);
+        }
+
+        .bulletin-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Realtime Chat Module UI */
+        .chat-container-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages-box {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-msg {
+            background-color: var(--bg-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            width: fit-content;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+
+        .chat-input-row {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        /* Rating Review Modal Popup Module */
+        .rating-modal-layer {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 1rem;
+        }
+
+        .rating-modal-layer.open { display: flex; }
+
+        .modal-body-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close-modal-x {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 1.25rem; cursor: pointer;
+        }
+
+        .stars-row-wrapper {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .star-element {
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .star-element.selected {
+            color: #fbbf24;
+        }
+
+        .loader-spinner {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* Adaptive Media Screen Rules Breakpoints */
+        @media (max-width: 768px) {
+            .main-app-shell {
+                flex-direction: column;
+            }
+            .app-sidebar {
+                width: 100%;
+                order: -1;
+            }
+            .top-nav-links, .search-container {
+                display: none;
+            }
+            header {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- HIGHLY OPTIMIZED NAVIGATION HEADER -->
+    <!-- APP NAVIGATION BAR HEADER -->
     <header>
-        <div class="logo-box">
-            <div class="logo-crop-frame">
-                <img src="logo.jpg" alt="Stoned Nepal Leaf">
-            </div>
-            <span class="logo-text">Thestonedphotographer</span>
+        <div class="brand-zone">
+            <button class="menu-trigger-btn" onclick="toggleSidebarMenu()"><i class="fa-solid fa-bars"></i></button>
+            <h1>EDN NETWORK</h1>
         </div>
-        <div class="header-right-controls">
-            <nav class="slideable-navbar">
-                <button class="nav-link active" onclick="switchTab('history')"><i class="fa-solid fa-gopuram"></i> Ganja in Nepal</button>
-                <button class="nav-link" onclick="switchTab('law')"><i class="fa-solid fa-gavel"></i> Drug Act 2033</button>
-                <button class="nav-link" onclick="switchTab('benefits')"><i class="fa-solid fa-seedling"></i> Benefits</button>
-                <button class="nav-link highlight" onclick="switchTab('hub')"><i class="fa-solid fa-users"></i> Legalization Hub</button>
-            </nav>
-            <!-- TOP RIGHT SIDEBAR TOGGLE TRIGGER -->
-            <button class="sidebar-toggle-trigger" onclick="toggleSidebarMenu()" aria-label="Open Menu">
-                <i class="fa-solid fa-bars-staggered"></i>
-            </button>
+
+        <div class="top-nav-links">
+            <button class="nav-link active" onclick="switchTab('hub')">The Hub</button>
+            <button class="nav-link" onclick="switchTab('news-tab')">Broadcast News</button>
+            <button class="nav-link" onclick="switchTab('about-tab')">About</button>
+        </div>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="network-search-input" onkeyup="executeGlobalSearch()" placeholder="Search transmissions...">
         </div>
     </header>
 
-    <!-- RIGHT-SIDE SLIDE-OUT DRAWER MENU -->
-    <div id="sidebar-dim-overlay" class="sidebar-dim-overlay" onclick="toggleSidebarMenu()"></div>
-    <aside id="app-sidebar" class="app-sidebar">
-        <div class="sidebar-header">
-            <h3>Network Engine</h3>
-            <button class="sidebar-close-btn" onclick="toggleSidebarMenu()">&times;</button>
-        </div>
+    <!-- MOBILE SIDEBAR OVERLAY DRAWER INTERFACE -->
+    <div id="sidebar-dim-overlay" class="sidebar-overlay" onclick="toggleSidebarMenu()"></div>
 
-        <!-- REAL-TIME SEARCH FEATURE FIELD -->
-        <div class="sidebar-search-container">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="network-search-input" placeholder="Search tabs, articles, posts..." onkeyup="executeGlobalSearch()">
-        </div>
+    <!-- MAIN INTERACTIVE APP CONTAINER SHELL -->
+    <main class="main-app-shell">
+        
+        <!-- SIDEBAR PLATFORM CONFIGURATION INTERFACE -->
+        <aside id="app-sidebar" class="app-sidebar">
+            <h3 style="font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Navigation Matrix</h3>
+            <button id="hub-feed-nav-btn" class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-rss"></i> Public Global Feed</button>
+            <button id="hub-chat-nav-btn" class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chat Room</button>
+            <hr style="border-color: var(--border-color);">
+            <button class="hub-side-btn" onclick="handleSidebarAction('news')"><i class="fa-solid fa-newspaper"></i> Read RSS Stream</button>
+            <button class="hub-side-btn" onclick="handleSidebarAction('rate')"><i class="fa-solid fa-star"></i> Leave Feedback Review</button>
+            <button class="hub-side-btn" onclick="handleSidebarAction('about')"><i class="fa-solid fa-info-circle"></i> View Manifest Details</button>
+        </aside>
 
-        <ul class="sidebar-menu-list">
-            <li><button onclick="handleSidebarAction('news')"><i class="fa-solid fa-bullhorn"></i> Platform News</button></li>
-            <li><button onclick="handleSidebarAction('feed')"><i class="fa-solid fa-images"></i> Interactive Feed</button></li>
-            <li><button onclick="handleSidebarAction('rate')"><i class="fa-solid fa-heart-circle-check"></i> Rate Our Network</button></li>
-        </ul>
-        <div class="sidebar-footer">
-            <p>Version 2.4.0 (2026)</p>
-        </div>
-    </aside>
-
-    <!-- INTERACTIVE RATING SCREEN SYSTEM (MODAL LAYER) -->
-    <div id="rating-modal-layer" class="modal-backdrop-layer">
-        <div class="rating-modal-card">
-            <div class="modal-header-row">
-                <h3><i class="fa-solid fa-star text-gold"></i> Rate Your Experience</h3>
-                <button class="modal-close-x" onclick="toggleRatingModal()">&times;</button>
-            </div>
-            <p>Your dynamic feedback steers the continuous expansion of Thestonedphotographer infrastructure.</p>
+        <!-- CENTER VIEW OPERATIONS FEED PORTAL -->
+        <section class="center-content-feed">
             
-            <div class="star-rating-row">
-                <i class="fa-star fa-regular star-element" onclick="assignStarRating(1)" data-value="1"></i>
-                <i class="fa-star fa-regular star-element" onclick="assignStarRating(2)" data-value="2"></i>
-                <i class="fa-star fa-regular star-element" onclick="assignStarRating(3)" data-value="3"></i>
-                <i class="fa-star fa-regular star-element" onclick="assignStarRating(4)" data-value="4"></i>
-                <i class="fa-star fa-regular star-element" onclick="assignStarRating(5)" data-value="5"></i>
-            </div>
-
-            <textarea id="rating-feedback-comments" placeholder="Write down your thoughts, requested features, or notes..."></textarea>
-            
-            <div class="modal-button-wrapper">
-                <button class="modal-btn btn-cancel" onclick="toggleRatingModal()">Dismiss</button>
-                <button class="modal-btn btn-submit" onclick="dispatchUserRating()">Submit Review</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- HERO CANVAS SECTION -->
-    <section class="hero search-target-item">
-        <div class="hero-overlay">
-            <h1>THE NEPALI CANNABIS NETWORK</h1>
-            <p>Rooted in Tradition, Driven by Science, Reforming the Future.</p>
-            <div class="status-badge"><span class="pulse-dot"></span> Active Community Network</div>
-        </div>
-    </section>
-
-    <!-- CONTENT MODULE BUILDER -->
-    <main class="app-container">
-
-        <!-- NEW PLATFORM NEWS BULLETIN MODULE -->
-        <section id="news-tab" class="tab-content search-target-item">
-            <div class="content-card">
-                <span class="meta-tag alert-tag">Platform Broadcast</span>
-                <h2>Official Network Bulletins & Updates</h2>
-                <hr>
-                <div class="news-bulletin-stack">
-                    <div class="bulletin-node">
-                        <span class="bulletin-date">June 15, 2026</span>
-                        <h3>Multimedia File Integration Upgrades Complete</h3>
-                        <p>Our centralized hub engine now includes optimized local memory mapping hooks. Users running advocacy nodes can attach images and raw video clips natively inside the timeline environment.</p>
-                    </div>
-                    <div class="bulletin-node">
-                        <span class="bulletin-date">May 28, 2026</span>
-                        <h3>Global Structural Search Implementation</h3>
-                        <p>To support high-velocity indexing across legal matrix logs and active text blocks, a real-time keyup parsing search engine has been successfully deployed directly into the sidebar interface layout.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 1: HISTORICAL HUB -->
-        <section id="history" class="tab-content active search-target-item">
-            <div class="content-card">
-                <span class="meta-tag">Cultural Heritage</span>
-                <h2>Ganja in Nepal: A Deeply Analyzed History</h2>
-                <hr>
-                <p>For centuries, the cannabis plant has coexisted alongside traditional Nepalese life. Far from being a modern recreational luxury, *Ganja* is deeply woven into our socio-religious fabric and ancient healthcare practices.</p>
+            <!-- TAB CONTAINER 1: THE HUB CENTRAL FEED & CHAT ROOMS -->
+            <div id="hub" class="tab-content active search-target-item">
                 
-                <div class="analysis-grid">
-                    <div class="analysis-box">
-                        <h3><i class="fa-solid fa-om"></i> Spiritual & Vedic Roots</h3>
-                        <p>In Vedic philosophy and Hindu tradition, cannabis is revered as a sacred plant of Lord Shiva. During the annual **Maha Shivaratri** festival, sadhus, mystics, and devotees traditionally utilize cannabis as a spiritual catalyst for meditation and ascetic devotion.</p>
-                    </div>
-                    <div class="analysis-box">
-                        <h3><i class="fa-solid fa-mortar-pestle"></i> Ayurvedic Medicine</h3>
-                        <p>Traditional Himalayan healers have long incorporated wild cannabis extracts into indigenous treatments to manage chronic pain, digestive disorders, insomnia, and respiratory distress long before western pharmaceutical equivalents arrived.</p>
-                    </div>
-                </div>
-
-                <blockquote class="historical-quote">
-                    "From the high altitudes of Rolpa and Western Nepal to the bustling storefronts of Kathmandu's famous <strong>Freak Street era (1960s-1973)</strong>, Nepal operated as a global gold-standard producer of legal, pure, high-quality cannabis products, generating substantial tourism and tax revenue."
-                </blockquote>
-            </div>
-        </section>
-
-        <!-- TAB 2: LEGAL CODES -->
-        <section id="law" class="tab-content search-target-item">
-            <div class="content-card">
-                <span class="meta-tag alert-tag">Legal Framework</span>
-                <h2>The Narcotic Drugs (Control) Act, 2033 (1976) & Present Evolution</h2>
-                <hr>
-                <p>Enacted under heavy foreign diplomatic and international treaty pressures during the global 'War on Drugs' era, the <strong>Narcotic Drugs (Control) Act of 2033</strong> imposed a sweeping blanket prohibition across Nepal, criminalizing cultivation, sale, and possession.</p>
-
-                <div class="law-table-container">
-                    <h3>Current Penalties Under Act 2033</h3>
-                    <table class="law-table">
-                        <thead>
-                            <tr>
-                                <th>Quantity / Offense</th>
-                                <th>Imprisonment Range</th>
-                                <th>Maximum Financial Fine</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Up to 50 grams (Possession)</td>
-                                <td>Up to 3 Months</td>
-                                <td>NPR 3,000</td>
-                            </tr>
-                            <tr>
-                                <td>50g to 500 grams</td>
-                                <td>1 Month to 1 Year</td>
-                                <td>NPR 5,000</td>
-                            </tr>
-                            <tr>
-                                <td>50g to 2 Kilograms</td>
-                                <td>6 Months to 2 Years</td>
-                                <td>NPR 10,000</td>
-                            </tr>
-                            <tr>
-                                <td>10 Kilograms or Over</td>
-                                <td>2 to 10 Years</td>
-                                <td>NPR 100,000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="update-box">
-                    <h3><i class="fa-solid fa-scale-balanced text-gold"></i> Groundbreaking Reforms</h3>
-                    <p>The tides are shifting rapidly. Following high-level discussions initiated by lawmakers pushing for medical exceptions, critical updates have altered the path toward regulation:</p>
-                    <ul>
-                        <li><strong>National Studies:</strong> Following budget directives, national frameworks initiated extensive feasibility tracking for controlled medicinal cannabis production.</li>
-                        <li><strong>Gandaki Province Bill:</strong> In late 2025, the Gandaki Provincial Assembly tabled a specialized regulatory draft bill targeting controlled cultivation to supply medical and industrial manufacturing industries.</li>
-                        <li><strong>Ilam Municipality Procedures:</strong> Breaking historic ground on **March 11, 2026**, Ilam Municipality officially launched its *'Hemp Cultivation Promotion and Management Procedure, 2026'*, issuing an active call for local farmers to apply for localized, regulated hemp farming operations to boost yarn, fiber, and industrial cloth production.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: SCIENTIFIC BENEFIT MATRIX -->
-        <section id="benefits" class="tab-content search-target-item">
-            <div class="content-card">
-                <span class="meta-tag benefit-tag">Impact Analysis</span>
-                <h2>The Triad of Benefits: Economic, Medical, and Structural</h2>
-                <hr>
-                
-                <div class="benefits-container">
-                    <div class="benefit-row">
-                        <div class="benefit-icon-box"><i class="fa-solid fa-chart-line"></i></div>
-                        <div class="benefit-text">
-                            <h3>1. Economic Regeneration & Exports</h3>
-                            <p>Global demand for organic hemp products represents a multi-billion dollar economic engine. Unlocking legalization empowers low-income, marginalized mountain farmers across Nepal with highly resilient cash-crop diversification, establishing direct avenues for self-employment and stopping the massive exodus of youth pursuing overseas labor.</p>
-                        </div>
-                    </div>
-
-                    <div class="benefit-row">
-                        <div class="benefit-icon-box"><i class="fa-solid fa-house-medical"></i></div>
-                        <div class="benefit-text">
-                            <h3>2. Medical Sovereignty & Oncology Relief</h3>
-                            <p>By distinguishing therapeutic cannabinoids like CBD from psychoactive compounds, Nepal can engineer affordable, home-grown palliative therapies. Leading oncologists support utilizing cannabis extracts as crucial pain-management solutions, particularly inside remote rural communities lacking immediate access to expensive pharmaceutical painkillers like morphine.</p>
-                        </div>
-                    </div>
-
-                    <div class="benefit-row">
-                        <div class="benefit-icon-box"><i class="fa-solid fa-industry"></i></div>
-                        <div class="benefit-text">
-                            <h3>3. Industrial Innovation</h3>
-                            <p>Industrial hemp fibers offer an eco-friendly replacement for high-emission materials. The durable inner stalks provide raw components for organic paper production, industrial textiles, sustainable clothing yarns, high-strength ropes, bioplastics, and heavy construction insulation blocks.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 4: LEGALIZATION HUB NETWORK -->
-        <section id="hub" class="tab-content search-target-item">
-            <div class="hub-layout">
-                <div class="hub-sidebar">
-                    <h3><i class="fa-solid fa-circle-nodes"></i> Hub Navigation</h3>
-                    <button id="hub-feed-nav-btn" class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
-                    <button id="hub-chat-nav-btn" class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
-                </div>
-
-                <div id="hub-feed-zone" class="hub-view-section active">
-                    <!-- UPGRADED MULTIMEDIA CAPABLE POST BOX -->
-                    <div class="create-post-box">
-                        <div class="post-input-wrapper">
-                            <i class="fa-solid fa-user-circle avatar-placeholder"></i>
-                            <input type="text" id="post-input-field" placeholder="Share photos, video clips, or thoughts with the network...">
-                        </div>
+                <!-- SUB-ZONE VIEW A: INTERACTIVE GLOBAL DATABASE POST STREAM -->
+                <div id="hub-feed-zone">
+                    <!-- Global Live Post Composer Box -->
+                    <div class="post-composer-card">
+                        <textarea id="post-input-field" class="composer-text-area" placeholder="Broadcast an item encrypted to the global cloud matrix feed..."></textarea>
                         
-                        <!-- MEDIA PREVIEW CONTAINER -->
-                        <div id="post-media-preview-container" class="media-preview-hold-zone" style="display: none;">
-                            <button class="clear-preview-btn" onclick="clearAttachedMedia()">&times;</button>
+                        <!-- Media File Local UI Rendering Engine Frame Box -->
+                        <div id="post-media-preview-container" class="media-preview-container">
+                            <button class="clear-media-btn" onclick="clearAttachedMedia()"><i class="fa-solid fa-xmark"></i></button>
                             <div id="media-preview-render-slot"></div>
                         </div>
 
-                        <div class="post-actions">
-                            <div class="media-attachment-triggers">
-                                <label for="feed-media-attachment-input" class="attachment-label-btn">
-                                    <i class="fa-solid fa-photo-film"></i> Add Pic / Clip
-                                </label>
-                                <input type="file" id="feed-media-attachment-input" accept="image/*,video/*" onchange="processSelectedMediaFile()" style="display: none;">
-                            </div>
-                            <button class="submit-post-btn" onclick="addNewPost()"><i class="fa-solid fa-paper-plane"></i> Post to Hub</button>
+                        <div class="composer-actions-row">
+                            <label for="feed-media-attachment-input" class="media-attach-label">
+                                <i class="fa-solid fa-image"></i> Attach Image/Video
+                            </label>
+                            <input type="file" id="feed-media-attachment-input" accept="image/*,video/*" style="display: none;" onchange="processSelectedMediaFile()">
+                            <button class="submit-transmission-btn" onclick="addNewPost()">Post to Hub</button>
                         </div>
                     </div>
 
+                    <!-- Stream Target Node Hook Renderer container -->
                     <div id="feed-posts-container">
-                        <div class="hub-post search-target-item">
-                            <div class="post-header">
-                                <i class="fa-solid fa-user-shield text-gold"></i>
-                                <div>
-                                    <h4>Advocate_Kathmandu <span class="badge">Verified Creator</span></h4>
-                                    <span class="post-time">2 hours ago</span>
-                                </div>
-                            </div>
-                            <p class="post-text">Stunning wild strain spotted blooming natively in the hills of western Nepal! The industrial biomass potential sitting completely unutilized right in our backyards is unbelievable. #LegalizeNepal</p>
-                            <div class="post-foot-actions">
-                                <span><i class="fa-solid fa-heart text-danger"></i> 142 Likes</span>
-                                <span><i class="fa-solid fa-comment"></i> 28 Comments</span>
-                            </div>
-                        </div>
+                        <div class="loader-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Syncing global cloud streams...</div>
                     </div>
                 </div>
 
-                <div id="hub-chat-zone" class="hub-view-section" style="display:none;">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chat-messages-box">
-                            <div class="chat-msg"><strong>System_Bot:</strong> Welcome to the Stoned Nepal Real-Time Network Chat. Stay respectful!</div>
+                <!-- SUB-ZONE VIEW B: TEMPORARY LIVE CHAT STREAM ROOM MODULE -->
+                <div id="hub-chat-zone" style="display: none;">
+                    <div class="chat-container-box">
+                        <div id="chat-messages-box" class="chat-messages-box">
+                            <div class="chat-msg"><strong>System_Beacon:</strong> Welcome to the temporary communications room. Transmissions typed here stay volatile.</div>
                         </div>
                         <div class="chat-input-row">
-                            <input type="text" id="chat-msg-input" placeholder="Type a message to the live network..." onkeypress="handleChatKey(event)">
-                            <button class="submit-post-btn" onclick="sendChatMessage()">Send</button>
+                            <input type="text" id="chat-msg-input" onkeydown="handleChatKey(event)" placeholder="Type secure chat code packet...">
+                            <button class="submit-transmission-btn" onclick="sendChatMessage()">Send</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
+            </div>
+
+            <!-- TAB CONTAINER 2: PARSED LIVE GOOGLE AUTOMATED BULLETINS -->
+            <div id="news-tab" class="tab-content search-target-item">
+                <h2 style="margin-bottom: 1.5rem; color: var(--accent-green); font-size: 1.5rem;"><i class="fa-solid fa-tower-broadcast"></i> Global Live RSS Broadcast</h2>
+                <div id="rss-news-loader" class="loader-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i> Gathering automated broadcast news feed items...</div>
+                <div id="automated-news-grid"></div>
+            </div>
+
+            <!-- TAB CONTAINER 3: MANIFEST ABOUT METADATA DETAILS -->
+            <div id="about-tab" class="tab-content search-target-item">
+                <div class="hub-post">
+                    <h2 style="color: var(--accent-green); margin-bottom: 1rem;"><i class="fa-solid fa-shield-halved"></i> Platform Infrastructure Blueprint Manifest</h2>
+                    <p style="line-height: 1.6; color: var(--text-muted); margin-bottom: 1rem;">
+                        This digital deployment network has successfully migrated from a sandbox browser-bound engine environment into a decentralized database configuration framework.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-muted);">
+                        Every single transmission broadcast processed via the main post composer card executes a direct asynchronous upload stream sequence into a central backend infrastructure. This architecture makes data persistently visible globally to all mobile or web endpoints hitting this server hub directory layout in real-time.
+                    </p>
+                </div>
+            </div>
+
+        </section>
     </main>
 
-    <!-- CORE INTERACTION ARCHITECTURE SCRIPT -->
+    <!-- FLOATING POPUP REVIEWS SYSTEM MODAL CONTAINER MATRIX LAYER -->
+    <div id="rating-modal-layer" class="rating-modal-layer">
+        <div class="modal-body-card">
+            <button class="close-modal-x" onclick="toggleRatingModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="text-align: center; font-size: 1.25rem;">Rate Platform Experience</h3>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">Your evaluation metrics save cleanly inside your local browser context.</p>
+            
+            <div class="stars-row-wrapper">
+                <i class="fa-regular fa-star star-element" onclick="assignStarRating(1)"></i>
+                <i class="fa-regular fa-star star-element" onclick="assignStarRating(2)"></i>
+                <i class="fa-regular fa-star star-element" onclick="assignStarRating(3)"></i>
+                <i class="fa-regular fa-star star-element" onclick="assignStarRating(4)"></i>
+                <i class="fa-regular fa-star star-element" onclick="assignStarRating(5)"></i>
+            </div>
+
+            <textarea id="rating-feedback-comments" class="composer-text-area" placeholder="Optional comments regarding current user experience configurations..." style="height: 80px;"></textarea>
+            <button class="submit-transmission-btn" style="width: 100%; border-radius: 0.5rem;" onclick="dispatchUserRating()">Save System Review Packet</button>
+        </div>
+    </div>
+
+    <!-- CORE REVENUE JAVASCRIPT GLOBAL DATABASE CONFIGURATION MANAGEMENT MATRIX -->
     <script>
-        let selectedMediaDataUrl = null;
+        // INITIALIZE CLOUD REAL-TIME CONNECTIONS
+        const { createClient } = supabase;
+        
+        // 🚨 CONFIGURATION STEP: PASTE YOUR RAW SUPABASE PROJECT CREDENTIALS IN THE QUOTES BELOW!
+        const SUPABASE_URL = "https://ajwuuivoxupygnkcglvl.supabase.co/rest/v1/"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_7YUO2fuR8_71WmxqtlqEVQ_GjEGteRI";
+        
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let localFileObject = null;
         let selectedMediaType = null;
         let currentActiveRatingValue = 0;
 
-        // SIDEBAR OPEN-CLOSE ENGINE
+        // APPLICATION ENTRY HOOK LIFE CYCLE
+        window.addEventListener('DOMContentLoaded', () => {
+            initializePersistentFeed();
+            fetchAutomatedLiveNews();
+            loadPersistentRatingState();
+        });
+
+        // SIDEBAR INTERFACE CONTROLLERS
         function toggleSidebarMenu() {
-            const sidebar = document.getElementById('app-sidebar');
-            const overlay = document.getElementById('sidebar-dim-overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('open');
+            document.getElementById('app-sidebar').classList.toggle('open');
+            document.getElementById('sidebar-dim-overlay').classList.toggle('open');
         }
 
-        // SIDEBAR BUTTON CONTROLLER ROUTER
         function handleSidebarAction(action) {
-            toggleSidebarMenu(); // Close side drawer
-            if(action === 'news') {
-                switchTab('news-tab');
-            } else if(action === 'feed') {
-                switchTab('hub');
-                switchHubView('feed');
-            } else if(action === 'rate') {
-                toggleRatingModal();
-            }
+            toggleSidebarMenu();
+            if(action === 'news') switchTab('news-tab');
+            else if(action === 'feed') { switchTab('hub'); switchHubView('feed'); }
+            else if(action === 'rate') toggleRatingModal();
+            else if(action === 'about') switchTab('about-tab');
         }
 
-        // VIEW PORT PORTAL TABS CONTROLLER
         function switchTab(tabId) {
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(section => section.classList.remove('active'));
             
-            // Map side actions safely back to horizontal headers where matching
             const matchingTopNav = Array.from(document.querySelectorAll('.nav-link')).find(btn => btn.getAttribute('onclick').includes(`'${tabId}'`));
             if(matchingTopNav) matchingTopNav.classList.add('active');
 
-            const targets = document.getElementById(tabId);
-            if(targets) targets.classList.add('active');
-            
-            const scalarOffset = window.innerWidth < 768 ? 240 : 380;
-            window.scrollTo({ top: scalarOffset, behavior: 'smooth' });
+            const targetSection = document.getElementById(tabId);
+            if(targetSection) targetSection.classList.add('active');
         }
 
         function switchHubView(viewType) {
             document.querySelectorAll('.hub-side-btn').forEach(btn => btn.classList.remove('active'));
-            
             if(viewType === 'feed') {
                 document.getElementById('hub-feed-nav-btn').classList.add('active');
                 document.getElementById('hub-feed-zone').style.display = 'block';
@@ -354,123 +670,244 @@
             }
         }
 
-        // LOCAL MEDIA FILE RENDERING ENGINE
+        // REAL-TIME NEWS AUTOMATION PARSER (RSS FEED)
+        async function fetchAutomatedLiveNews() {
+            const newsGrid = document.getElementById('automated-news-grid');
+            const loader = document.getElementById('rss-news-loader');
+            const targetRssUrl = 'https://news.google.com/rss/search?q=cannabis+policy+reform+medical&hl=en-US&gl=US&ceid=US:en';
+            const rssProxyEndpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(targetRssUrl)}`;
+
+            try {
+                const response = await fetch(rssProxyEndpoint);
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    loader.style.display = 'none';
+                    newsGrid.innerHTML = '';
+                    
+                    data.items.slice(0, 5).forEach(item => {
+                        const cleanDate = new Date(item.pubDate).toLocaleDateString('en-US', {
+                            year: 'numeric', month: 'long', day: 'numeric'
+                        });
+                        
+                        const newsNodeHtml = `
+                            <div class="bulletin-node">
+                                <span class="bulletin-date"><i class="fa-solid fa-globe"></i> Broadcast: ${cleanDate}</span>
+                                <h3><a href="${item.link}" target="_blank" class="news-anchor">${item.title}</a></h3>
+                                <p>Source: ${item.author || 'Global News Matrix'} - Click link above to inspect real-time coverage records.</p>
+                            </div>
+                        `;
+                        newsGrid.insertAdjacentHTML('beforeend', newsNodeHtml);
+                    });
+                } else {
+                    throw new Error("Invalid structure");
+                }
+            } catch (error) {
+                loader.style.display = 'none';
+                newsGrid.innerHTML = `
+                    <div class="bulletin-node">
+                        <span class="bulletin-date">June 2026 Update</span>
+                        <h3><i class="fa-solid fa-gavel text-gold"></i> Bagmati Province Initiates Medical Cultivation Research Matrix</h3>
+                        <p>Regional legislative units inside Nepal have formalized structural evaluations studying security frameworks for managed wild crop standard extractions.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // GLOBAL CLOUD DATABASE SYNC MATRIX
+        async function initializePersistentFeed() {
+            const container = document.getElementById('feed-posts-container');
+            
+            // Pull the latest rows from your database ordered by newest first
+            const { data: databasePosts, error } = await _supabase
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error synchronizing database feed:', error);
+                container.innerHTML = `<div class="hub-post"><p class="post-text" style="color:#ef4444;">Failed to sync with cloud. Did you configure your API keys correctly inside the script tags?</p></div>`;
+                return;
+            }
+            
+            if(!databasePosts || databasePosts.length === 0) {
+                container.innerHTML = `
+                    <div id="fallback-post-card" class="hub-post search-target-item">
+                        <p class="post-text">The global network feed is currently empty. Be the first to drop a live transmission record straight from Nepal!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            databasePosts.forEach(post => {
+                let mediaBlock = '';
+                if(post.media_url) {
+                    if(post.media_type && post.media_type.startsWith('image/')) {
+                        mediaBlock = `<div class="post-rendered-media-frame"><img src="${post.media_url}" alt="Cloud Asset"></div>`;
+                    } else if(post.media_type && post.media_type.startsWith('video/')) {
+                        mediaBlock = `<div class="post-rendered-media-frame"><video src="${post.media_url}" controls></video></div>`;
+                    }
+                }
+                
+                const postDate = new Date(post.created_at).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'
+                });
+                
+                const cardHtml = `
+                    <div class="hub-post search-target-item">
+                        <div class="post-header">
+                            <i class="fa-solid fa-user-circle"></i>
+                            <div>
+                                <h4>Network_Member_Global</h4>
+                                <span class="post-time">${postDate}</span>
+                            </div>
+                        </div>
+                        ${post.text ? `<p class="post-text">${post.text}</p>` : ''}
+                        ${mediaBlock}
+                        <div class="post-foot-actions">
+                            <span style="cursor:pointer; font-weight:bold; color:#4ade80;" onclick="incrementPostLike(${post.id}, ${post.likes || 0})">
+                                <i class="fa-solid fa-heart" style="color:#ef4444;"></i> ${post.likes || 0} Likes
+                            </span>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
         function processSelectedMediaFile() {
             const fileInput = document.getElementById('feed-media-attachment-input');
             const previewContainer = document.getElementById('post-media-preview-container');
             const renderSlot = document.getElementById('media-preview-render-slot');
             
             if(!fileInput.files || !fileInput.files[0]) return;
-            const file = fileInput.files[0];
-            selectedMediaType = file.type;
-            selectedMediaDataUrl = URL.createObjectURL(file);
+            localFileObject = fileInput.files[0];
+            selectedMediaType = localFileObject.type;
 
-            renderSlot.innerHTML = '';
-            if(selectedMediaType.startsWith('image/')) {
-                const img = document.createElement('img');
-                img.src = selectedMediaDataUrl;
-                renderSlot.appendChild(img);
-            } else if(selectedMediaType.startsWith('video/')) {
-                const vid = document.createElement('video');
-                vid.src = selectedMediaDataUrl;
-                vid.controls = true;
-                renderSlot.appendChild(vid);
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                renderSlot.innerHTML = '';
+                if(selectedMediaType.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    renderSlot.appendChild(img);
+                } else if(selectedMediaType.startsWith('video/')) {
+                    const vid = document.createElement('video');
+                    vid.src = e.target.result;
+                    vid.controls = true;
+                    renderSlot.appendChild(vid);
+                }
+                previewContainer.style.display = 'block';
             }
-
-            previewContainer.style.display = 'block';
+            reader.readAsDataURL(localFileObject);
         }
 
         function clearAttachedMedia() {
             document.getElementById('feed-media-attachment-input').value = "";
             document.getElementById('post-media-preview-container').style.display = 'none';
             document.getElementById('media-preview-render-slot').innerHTML = '';
-            selectedMediaDataUrl = null;
+            localFileObject = null;
             selectedMediaType = null;
         }
 
-        // REAL TIME INTERACTIVE USER POST INJECTION ENGINE
-        function addNewPost() {
+        async function addNewPost() {
             const inputField = document.getElementById('post-input-field');
             const textContent = inputField.value.trim();
-            
-            if(textContent === "" && !selectedMediaDataUrl) return;
+            if(textContent === "" && !localFileObject) return;
 
-            const container = document.getElementById('feed-posts-container');
-            
-            let mediaMarkupBlock = '';
-            if(selectedMediaDataUrl) {
-                if(selectedMediaType.startsWith('image/')) {
-                    mediaMarkupBlock = `<div class="post-rendered-media-frame"><img src="${selectedMediaDataUrl}" alt="Attached Post Asset"></div>`;
-                } else if(selectedMediaType.startsWith('video/')) {
-                    mediaMarkupBlock = `<div class="post-rendered-media-frame"><video src="${selectedMediaDataUrl}" controls></video></div>`;
+            let uploadedMediaUrl = null;
+
+            // Stream files to the Supabase storage bucket block if media exists
+            if (localFileObject) {
+                const fileExtension = localFileObject.name.split('.').pop();
+                const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExtension}`;
+                
+                const { data, error: uploadError } = await _supabase.storage
+                    .from('network-media')
+                    .upload(uniqueFileName, localFileObject);
+
+                if (uploadError) {
+                    alert('Cloud file upload failed: ' + uploadError.message);
+                    return;
                 }
+
+                const { data: publicUrlData } = _supabase.storage
+                    .from('network-media')
+                    .getPublicUrl(uniqueFileName);
+                    
+                uploadedMediaUrl = publicUrlData.publicUrl;
             }
 
-            const newPostHtml = `
-                <div class="hub-post search-target-item" style="animation: fadeIn 0.4s ease-out;">
-                    <div class="post-header">
-                        <i class="fa-solid fa-user-circle"></i>
-                        <div>
-                            <h4>Network_Member_Nepal</h4>
-                            <span class="post-time">Just now</span>
-                        </div>
-                    </div>
-                    ${textContent ? `<p class="post-text">${textContent}</p>` : ''}
-                    ${mediaMarkupBlock}
-                    <div class="post-foot-actions">
-                        <span><i class="fa-solid fa-heart"></i> 0 Likes</span>
-                        <span><i class="fa-solid fa-comment"></i> 0 Comments</span>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('afterbegin', newPostHtml);
-            
-            // Clean interface state
+            // Insert everything direct to our persistent public database table
+            const { error: dbError } = await _supabase
+                .from('posts')
+                .insert([
+                    { 
+                        text: textContent, 
+                        media_url: uploadedMediaUrl, 
+                        media_type: selectedMediaType,
+                        likes: 0 
+                    }
+                ]);
+
+            if (dbError) {
+                alert('Database execution failed: ' + dbError.message);
+                return;
+            }
+
             inputField.value = "";
             clearAttachedMedia();
+            initializePersistentFeed();
         }
 
-        // REAL-TIME SEARCH TEXT PARSING ALGORITHM
+        async function incrementPostLike(postId, currentLikes) {
+            const { error } = await _supabase
+                .from('posts')
+                .update({ likes: currentLikes + 1 })
+                .eq('id', postId);
+                
+            if (!error) {
+                initializePersistentFeed();
+            }
+        }
+
+        // SEARCH UTILITY
         function executeGlobalSearch() {
             const query = document.getElementById('network-search-input').value.toLowerCase().trim();
-            const searchableElements = document.querySelectorAll('.search-target-item');
-
-            searchableElements.forEach(element => {
-                const elementText = element.textContent.toLowerCase();
+            document.querySelectorAll('.search-target-item').forEach(element => {
+                const text = element.textContent.toLowerCase();
                 if(query === "") {
                     element.style.display = "";
-                    element.style.opacity = "1";
-                } else if(elementText.includes(query)) {
+                } else if(text.includes(query)) {
                     element.style.display = "";
-                    element.style.opacity = "1";
-                    // If element is an inactive parent tab section, illuminate it to prevent rendering confusion
                     if(element.classList.contains('tab-content') && !element.classList.contains('active')) {
                         document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
                         element.classList.add('active');
                     }
                 } else {
-                    // Soft vanish elements matching nothing
                     element.style.display = "none";
                 }
             });
         }
 
-        // RATING PORTAL MODAL DIALOG TOGGLE INTERFACES
+        // PERSISTENT REVIEWS CONTROLLERS
         function toggleRatingModal() {
-            const modal = document.getElementById('rating-modal-layer');
-            modal.classList.toggle('open');
-            if(!modal.classList.contains('open')) {
-                // Clear state upon drop out
-                assignStarRating(0);
-                document.getElementById('rating-feedback-comments').value = '';
-            }
+            document.getElementById('rating-modal-layer').classList.toggle('open');
+        }
+
+        // Evaluates local state patterns preserved inside browser
+        function loadPersistentRatingState() {
+            const savedScore = localStorage.getItem('user_rating_score');
+            const savedComment = localStorage.getItem('user_rating_comment');
+            if(savedScore) assignStarRating(parseInt(savedScore));
+            if(savedComment) document.getElementById('rating-feedback-comments').value = savedComment;
         }
 
         function assignStarRating(ratingValue) {
             currentActiveRatingValue = ratingValue;
-            const stars = document.querySelectorAll('.star-element');
-            stars.forEach((star, index) => {
-                if (index < ratingValue) {
+            document.querySelectorAll('.star-element').forEach((star, idx) => {
+                if (idx < ratingValue) {
                     star.classList.remove('fa-regular');
                     star.classList.add('fa-solid', 'selected');
                 } else {
@@ -482,31 +919,32 @@
 
         function dispatchUserRating() {
             if(currentActiveRatingValue === 0) {
-                alert('Please pick a star metrics rating score before dispatching feedback.');
+                alert('Please pick a star metric evaluation value.');
                 return;
             }
-            alert(`Thank you for rating us ${currentActiveRatingValue} Stars! Feedback registered on network repository.`);
+            const comments = document.getElementById('rating-feedback-comments').value.trim();
+            localStorage.setItem('user_rating_score', currentActiveRatingValue);
+            localStorage.setItem('user_rating_comment', comments);
+            alert('Thank you! Review saved locally inside browser session cache data.');
             toggleRatingModal();
         }
 
-        // CHAT DISPATCH HANDLERS
+        // NETWORK ROOM LIVE CHAT
         function sendChatMessage() {
             const inputField = document.getElementById('chat-msg-input');
-            const textContent = inputField.value.trim();
-            if(textContent === "") return;
+            const text = inputField.value.trim();
+            if(text === "") return;
 
             const chatBox = document.getElementById('chat-messages-box');
-            const newMsgElement = document.createElement('div');
-            newMsgElement.className = 'chat-msg';
-            newMsgElement.innerHTML = `<strong>You:</strong> ${textContent}`;
-            chatBox.appendChild(newMsgElement);
+            const msgNode = document.createElement('div');
+            msgNode.className = 'chat-msg';
+            msgNode.innerHTML = `<strong>You:</strong> ${text}`;
+            chatBox.appendChild(msgNode);
             chatBox.scrollTop = chatBox.scrollHeight;
             inputField.value = "";
         }
 
-        function handleChatKey(e) {
-            if(e.key === 'Enter') sendChatMessage();
-        }
+        function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
     </script>
 </body>
 </html>
