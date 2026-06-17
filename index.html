@@ -3,28 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Nepali Cannabis Network</title>
+    <title>The Stoned Photographer Network</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
+    <!-- HIGHLY OPTIMIZED NAVIGATION HEADER -->
     <header>
         <div class="logo-box">
             <div class="logo-crop-frame">
                 <img src="logo.jpg" alt="Stoned Nepal Leaf">
             </div>
-            <span class="logo-text">STONED NEPAL</span>
+            <span class="logo-text">Thestonedphotographer</span>
         </div>
-        <nav class="slideable-navbar">
-            <button class="nav-link active" onclick="switchTab('history')"><i class="fa-solid fa-gopuram"></i> Ganja in Nepal</button>
-            <button class="nav-link" onclick="switchTab('law')"><i class="fa-solid fa-gavel"></i> Drug Act 2033</button>
-            <button class="nav-link" onclick="switchTab('benefits')"><i class="fa-solid fa-seedling"></i> Benefits</button>
-            <button class="nav-link highlight" onclick="switchTab('hub')"><i class="fa-solid fa-users"></i> Legalization Hub</button>
-        </nav>
+        <div class="header-right-controls">
+            <nav class="slideable-navbar">
+                <button class="nav-link active" onclick="switchTab('history')"><i class="fa-solid fa-gopuram"></i> Ganja in Nepal</button>
+                <button class="nav-link" onclick="switchTab('law')"><i class="fa-solid fa-gavel"></i> Drug Act 2033</button>
+                <button class="nav-link" onclick="switchTab('benefits')"><i class="fa-solid fa-seedling"></i> Benefits</button>
+                <button class="nav-link highlight" onclick="switchTab('hub')"><i class="fa-solid fa-users"></i> Legalization Hub</button>
+            </nav>
+            <!-- TOP RIGHT SIDEBAR TOGGLE TRIGGER -->
+            <button class="sidebar-toggle-trigger" onclick="toggleSidebarMenu()" aria-label="Open Menu">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
     </header>
 
-    <section class="hero">
+    <!-- RIGHT-SIDE SLIDE-OUT DRAWER MENU -->
+    <div id="sidebar-dim-overlay" class="sidebar-dim-overlay" onclick="toggleSidebarMenu()"></div>
+    <aside id="app-sidebar" class="app-sidebar">
+        <div class="sidebar-header">
+            <h3>Network Engine</h3>
+            <button class="sidebar-close-btn" onclick="toggleSidebarMenu()">&times;</button>
+        </div>
+
+        <!-- REAL-TIME SEARCH FEATURE FIELD -->
+        <div class="sidebar-search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="network-search-input" placeholder="Search tabs, articles, posts..." onkeyup="executeGlobalSearch()">
+        </div>
+
+        <ul class="sidebar-menu-list">
+            <li><button onclick="handleSidebarAction('news')"><i class="fa-solid fa-bullhorn"></i> Platform News</button></li>
+            <li><button onclick="handleSidebarAction('feed')"><i class="fa-solid fa-images"></i> Interactive Feed</button></li>
+            <li><button onclick="handleSidebarAction('rate')"><i class="fa-solid fa-heart-circle-check"></i> Rate Our Network</button></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p>Version 2.4.0 (2026)</p>
+        </div>
+    </aside>
+
+    <!-- INTERACTIVE RATING SCREEN SYSTEM (MODAL LAYER) -->
+    <div id="rating-modal-layer" class="modal-backdrop-layer">
+        <div class="rating-modal-card">
+            <div class="modal-header-row">
+                <h3><i class="fa-solid fa-star text-gold"></i> Rate Your Experience</h3>
+                <button class="modal-close-x" onclick="toggleRatingModal()">&times;</button>
+            </div>
+            <p>Your dynamic feedback steers the continuous expansion of Thestonedphotographer infrastructure.</p>
+            
+            <div class="star-rating-row">
+                <i class="fa-star fa-regular star-element" onclick="assignStarRating(1)" data-value="1"></i>
+                <i class="fa-star fa-regular star-element" onclick="assignStarRating(2)" data-value="2"></i>
+                <i class="fa-star fa-regular star-element" onclick="assignStarRating(3)" data-value="3"></i>
+                <i class="fa-star fa-regular star-element" onclick="assignStarRating(4)" data-value="4"></i>
+                <i class="fa-star fa-regular star-element" onclick="assignStarRating(5)" data-value="5"></i>
+            </div>
+
+            <textarea id="rating-feedback-comments" placeholder="Write down your thoughts, requested features, or notes..."></textarea>
+            
+            <div class="modal-button-wrapper">
+                <button class="modal-btn btn-cancel" onclick="toggleRatingModal()">Dismiss</button>
+                <button class="modal-btn btn-submit" onclick="dispatchUserRating()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO CANVAS SECTION -->
+    <section class="hero search-target-item">
         <div class="hero-overlay">
             <h1>THE NEPALI CANNABIS NETWORK</h1>
             <p>Rooted in Tradition, Driven by Science, Reforming the Future.</p>
@@ -32,9 +90,32 @@
         </div>
     </section>
 
+    <!-- CONTENT MODULE BUILDER -->
     <main class="app-container">
 
-        <section id="history" class="tab-content active">
+        <!-- NEW PLATFORM NEWS BULLETIN MODULE -->
+        <section id="news-tab" class="tab-content search-target-item">
+            <div class="content-card">
+                <span class="meta-tag alert-tag">Platform Broadcast</span>
+                <h2>Official Network Bulletins & Updates</h2>
+                <hr>
+                <div class="news-bulletin-stack">
+                    <div class="bulletin-node">
+                        <span class="bulletin-date">June 15, 2026</span>
+                        <h3>Multimedia File Integration Upgrades Complete</h3>
+                        <p>Our centralized hub engine now includes optimized local memory mapping hooks. Users running advocacy nodes can attach images and raw video clips natively inside the timeline environment.</p>
+                    </div>
+                    <div class="bulletin-node">
+                        <span class="bulletin-date">May 28, 2026</span>
+                        <h3>Global Structural Search Implementation</h3>
+                        <p>To support high-velocity indexing across legal matrix logs and active text blocks, a real-time keyup parsing search engine has been successfully deployed directly into the sidebar interface layout.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 1: HISTORICAL HUB -->
+        <section id="history" class="tab-content active search-target-item">
             <div class="content-card">
                 <span class="meta-tag">Cultural Heritage</span>
                 <h2>Ganja in Nepal: A Deeply Analyzed History</h2>
@@ -58,7 +139,8 @@
             </div>
         </section>
 
-        <section id="law" class="tab-content">
+        <!-- TAB 2: LEGAL CODES -->
+        <section id="law" class="tab-content search-target-item">
             <div class="content-card">
                 <span class="meta-tag alert-tag">Legal Framework</span>
                 <h2>The Narcotic Drugs (Control) Act, 2033 (1976) & Present Evolution</h2>
@@ -112,7 +194,8 @@
             </div>
         </section>
 
-        <section id="benefits" class="tab-content">
+        <!-- TAB 3: SCIENTIFIC BENEFIT MATRIX -->
+        <section id="benefits" class="tab-content search-target-item">
             <div class="content-card">
                 <span class="meta-tag benefit-tag">Impact Analysis</span>
                 <h2>The Triad of Benefits: Economic, Medical, and Structural</h2>
@@ -146,28 +229,42 @@
             </div>
         </section>
 
-        <section id="hub" class="tab-content">
+        <!-- TAB 4: LEGALIZATION HUB NETWORK -->
+        <section id="hub" class="tab-content search-target-item">
             <div class="hub-layout">
                 <div class="hub-sidebar">
                     <h3><i class="fa-solid fa-circle-nodes"></i> Hub Navigation</h3>
-                    <button class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
-                    <button class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
+                    <button id="hub-feed-nav-btn" class="hub-side-btn active" onclick="switchHubView('feed')"><i class="fa-solid fa-newspaper"></i> Community Feed</button>
+                    <button id="hub-chat-nav-btn" class="hub-side-btn" onclick="switchHubView('chat')"><i class="fa-solid fa-comments"></i> Live Chatroom</button>
                 </div>
 
                 <div id="hub-feed-zone" class="hub-view-section active">
+                    <!-- UPGRADED MULTIMEDIA CAPABLE POST BOX -->
                     <div class="create-post-box">
                         <div class="post-input-wrapper">
                             <i class="fa-solid fa-user-circle avatar-placeholder"></i>
-                            <input type="text" id="post-input-field" placeholder="Share photos, clips, or thoughts with the network...">
+                            <input type="text" id="post-input-field" placeholder="Share photos, video clips, or thoughts with the network...">
                         </div>
+                        
+                        <!-- MEDIA PREVIEW CONTAINER -->
+                        <div id="post-media-preview-container" class="media-preview-hold-zone" style="display: none;">
+                            <button class="clear-preview-btn" onclick="clearAttachedMedia()">&times;</button>
+                            <div id="media-preview-render-slot"></div>
+                        </div>
+
                         <div class="post-actions">
-                            <span style="font-size: 12px; color: #64748b;">Posting as: Anonymous Advocate</span>
-                            <button class="submit-post-btn" onclick="addNewPost()">Post to Hub</button>
+                            <div class="media-attachment-triggers">
+                                <label for="feed-media-attachment-input" class="attachment-label-btn">
+                                    <i class="fa-solid fa-photo-film"></i> Add Pic / Clip
+                                </label>
+                                <input type="file" id="feed-media-attachment-input" accept="image/*,video/*" onchange="processSelectedMediaFile()" style="display: none;">
+                            </div>
+                            <button class="submit-post-btn" onclick="addNewPost()"><i class="fa-solid fa-paper-plane"></i> Post to Hub</button>
                         </div>
                     </div>
 
                     <div id="feed-posts-container">
-                        <div class="hub-post">
+                        <div class="hub-post search-target-item">
                             <div class="post-header">
                                 <i class="fa-solid fa-user-shield text-gold"></i>
                                 <div>
@@ -200,40 +297,117 @@
 
     </main>
 
+    <!-- CORE INTERACTION ARCHITECTURE SCRIPT -->
     <script>
+        let selectedMediaDataUrl = null;
+        let selectedMediaType = null;
+        let currentActiveRatingValue = 0;
+
+        // SIDEBAR OPEN-CLOSE ENGINE
+        function toggleSidebarMenu() {
+            const sidebar = document.getElementById('app-sidebar');
+            const overlay = document.getElementById('sidebar-dim-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        // SIDEBAR BUTTON CONTROLLER ROUTER
+        function handleSidebarAction(action) {
+            toggleSidebarMenu(); // Close side drawer
+            if(action === 'news') {
+                switchTab('news-tab');
+            } else if(action === 'feed') {
+                switchTab('hub');
+                switchHubView('feed');
+            } else if(action === 'rate') {
+                toggleRatingModal();
+            }
+        }
+
+        // VIEW PORT PORTAL TABS CONTROLLER
         function switchTab(tabId) {
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(section => section.classList.remove('active'));
             
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+            // Map side actions safely back to horizontal headers where matching
+            const matchingTopNav = Array.from(document.querySelectorAll('.nav-link')).find(btn => btn.getAttribute('onclick').includes(`'${tabId}'`));
+            if(matchingTopNav) matchingTopNav.classList.add('active');
+
+            const targets = document.getElementById(tabId);
+            if(targets) targets.classList.add('active');
             
-            // Smoother focal snap points for phones
             const scalarOffset = window.innerWidth < 768 ? 240 : 380;
             window.scrollTo({ top: scalarOffset, behavior: 'smooth' });
         }
 
         function switchHubView(viewType) {
             document.querySelectorAll('.hub-side-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-
+            
             if(viewType === 'feed') {
+                document.getElementById('hub-feed-nav-btn').classList.add('active');
                 document.getElementById('hub-feed-zone').style.display = 'block';
                 document.getElementById('hub-chat-zone').style.display = 'none';
             } else {
+                document.getElementById('hub-chat-nav-btn').classList.add('active');
                 document.getElementById('hub-feed-zone').style.display = 'none';
                 document.getElementById('hub-chat-zone').style.display = 'block';
             }
         }
 
+        // LOCAL MEDIA FILE RENDERING ENGINE
+        function processSelectedMediaFile() {
+            const fileInput = document.getElementById('feed-media-attachment-input');
+            const previewContainer = document.getElementById('post-media-preview-container');
+            const renderSlot = document.getElementById('media-preview-render-slot');
+            
+            if(!fileInput.files || !fileInput.files[0]) return;
+            const file = fileInput.files[0];
+            selectedMediaType = file.type;
+            selectedMediaDataUrl = URL.createObjectURL(file);
+
+            renderSlot.innerHTML = '';
+            if(selectedMediaType.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = selectedMediaDataUrl;
+                renderSlot.appendChild(img);
+            } else if(selectedMediaType.startsWith('video/')) {
+                const vid = document.createElement('video');
+                vid.src = selectedMediaDataUrl;
+                vid.controls = true;
+                renderSlot.appendChild(vid);
+            }
+
+            previewContainer.style.display = 'block';
+        }
+
+        function clearAttachedMedia() {
+            document.getElementById('feed-media-attachment-input').value = "";
+            document.getElementById('post-media-preview-container').style.display = 'none';
+            document.getElementById('media-preview-render-slot').innerHTML = '';
+            selectedMediaDataUrl = null;
+            selectedMediaType = null;
+        }
+
+        // REAL TIME INTERACTIVE USER POST INJECTION ENGINE
         function addNewPost() {
             const inputField = document.getElementById('post-input-field');
             const textContent = inputField.value.trim();
-            if(textContent === "") return;
+            
+            if(textContent === "" && !selectedMediaDataUrl) return;
 
             const container = document.getElementById('feed-posts-container');
+            
+            let mediaMarkupBlock = '';
+            if(selectedMediaDataUrl) {
+                if(selectedMediaType.startsWith('image/')) {
+                    mediaMarkupBlock = `<div class="post-rendered-media-frame"><img src="${selectedMediaDataUrl}" alt="Attached Post Asset"></div>`;
+                } else if(selectedMediaType.startsWith('video/')) {
+                    mediaMarkupBlock = `<div class="post-rendered-media-frame"><video src="${selectedMediaDataUrl}" controls></video></div>`;
+                }
+            }
+
             const newPostHtml = `
-                <div class="hub-post" style="animation: fadeIn 0.4s ease-out;">
+                <div class="hub-post search-target-item" style="animation: fadeIn 0.4s ease-out;">
                     <div class="post-header">
                         <i class="fa-solid fa-user-circle"></i>
                         <div>
@@ -241,7 +415,8 @@
                             <span class="post-time">Just now</span>
                         </div>
                     </div>
-                    <p class="post-text">${textContent}</p>
+                    ${textContent ? `<p class="post-text">${textContent}</p>` : ''}
+                    ${mediaMarkupBlock}
                     <div class="post-foot-actions">
                         <span><i class="fa-solid fa-heart"></i> 0 Likes</span>
                         <span><i class="fa-solid fa-comment"></i> 0 Comments</span>
@@ -249,9 +424,72 @@
                 </div>
             `;
             container.insertAdjacentHTML('afterbegin', newPostHtml);
+            
+            // Clean interface state
             inputField.value = "";
+            clearAttachedMedia();
         }
 
+        // REAL-TIME SEARCH TEXT PARSING ALGORITHM
+        function executeGlobalSearch() {
+            const query = document.getElementById('network-search-input').value.toLowerCase().trim();
+            const searchableElements = document.querySelectorAll('.search-target-item');
+
+            searchableElements.forEach(element => {
+                const elementText = element.textContent.toLowerCase();
+                if(query === "") {
+                    element.style.display = "";
+                    element.style.opacity = "1";
+                } else if(elementText.includes(query)) {
+                    element.style.display = "";
+                    element.style.opacity = "1";
+                    // If element is an inactive parent tab section, illuminate it to prevent rendering confusion
+                    if(element.classList.contains('tab-content') && !element.classList.contains('active')) {
+                        document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+                        element.classList.add('active');
+                    }
+                } else {
+                    // Soft vanish elements matching nothing
+                    element.style.display = "none";
+                }
+            });
+        }
+
+        // RATING PORTAL MODAL DIALOG TOGGLE INTERFACES
+        function toggleRatingModal() {
+            const modal = document.getElementById('rating-modal-layer');
+            modal.classList.toggle('open');
+            if(!modal.classList.contains('open')) {
+                // Clear state upon drop out
+                assignStarRating(0);
+                document.getElementById('rating-feedback-comments').value = '';
+            }
+        }
+
+        function assignStarRating(ratingValue) {
+            currentActiveRatingValue = ratingValue;
+            const stars = document.querySelectorAll('.star-element');
+            stars.forEach((star, index) => {
+                if (index < ratingValue) {
+                    star.classList.remove('fa-regular');
+                    star.classList.add('fa-solid', 'selected');
+                } else {
+                    star.classList.remove('fa-solid', 'selected');
+                    star.classList.add('fa-regular');
+                }
+            });
+        }
+
+        function dispatchUserRating() {
+            if(currentActiveRatingValue === 0) {
+                alert('Please pick a star metrics rating score before dispatching feedback.');
+                return;
+            }
+            alert(`Thank you for rating us ${currentActiveRatingValue} Stars! Feedback registered on network repository.`);
+            toggleRatingModal();
+        }
+
+        // CHAT DISPATCH HANDLERS
         function sendChatMessage() {
             const inputField = document.getElementById('chat-msg-input');
             const textContent = inputField.value.trim();
